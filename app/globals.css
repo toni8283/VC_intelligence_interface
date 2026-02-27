@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: #f9fafb;
+  color: #374151;
+  line-height: 1.6;
+}
+
+/* Refined scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f3f4f6;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Selection color */
+::selection {
+  background-color: #0066ff;
+  color: white;
+}
+
+/* Focus visible for accessibility */
+:focus-visible {
+  outline: 2px solid #0066ff;
+  outline-offset: 2px;
+}
+
+/* Smooth transitions */
+button,
+input,
+select,
+textarea,
+a {
+  transition: all 0.2s ease;
+}
