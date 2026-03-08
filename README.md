@@ -153,6 +153,8 @@ The app seeds with 8 mock companies (Vercel, Anthropic, Stripe, Figure AI, Canva
 - **Color scheme**: Slate grays, accent blue (#0066ff), white backgrounds
 - **Typography**: Inter font family for consistency and legibility
 - **Interactions**: Smooth transitions, hover states, loading indicators
+  <img width="3054" height="1432" alt="image" src="https://github.com/user-attachments/assets/59afa4dc-415e-4f74-a31c-807e820f302e" />
+
 
 ### Key Pages
 
@@ -161,18 +163,28 @@ The app seeds with 8 mock companies (Vercel, Anthropic, Stripe, Figure AI, Canva
 - Sortable table with pagination
 - Industry + Stage filters
 - Save complex searches for later
+  <img width="2511" height="856" alt="image" src="https://github.com/user-attachments/assets/76951de4-00bc-4c40-ba0f-0054364642c2" />
+  <img width="2933" height="856" alt="image" src="https://github.com/user-attachments/assets/ddbb7569-ab5e-49f6-b71b-881da645fd13" />
+
+
 
 **2. Company Profile** (`/companies/[id]`)
 - Detailed company metrics (stage, funding, location)
 - **Live enrichment panel**: Click "Enrich Now" to fetch and analyze website
 - Internal notes for team collaboration
 - Save to lists for tracking
+  <img width="2933" height="953" alt="image" src="https://github.com/user-attachments/assets/b1d4460f-457a-41d2-b0fa-9953bd49e1d9" />
+  <img width="1742" height="1425" alt="image" src="https://github.com/user-attachments/assets/dc6801d7-0a6a-477e-bc91-426e6cb6ae41" />
+
+
 
 **3. Lists Management** (`/lists`)
 - Create named lists with descriptions
 - Add/remove companies from lists
 - Export lists to CSV
 - Track companies by investment criteria
+  <img width="2114" height="1382" alt="image" src="https://github.com/user-attachments/assets/284ddc38-1653-4795-9575-a87798e4de2c" />
+
 
 **4. Saved Searches** (`/saved`)
 - View all saved search queries
