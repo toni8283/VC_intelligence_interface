@@ -1,58 +1,54 @@
 # TB Scout - Precision Venture Intelligence Platform
 
-A polished, production-grade VC intelligence interface with live enrichment capabilities. Discover companies, create lists, save searches, and enrich profiles with real website data—all in a fast, intuitive interface.
+A production-grade venture capital intelligence platform designed for fast discovery, valuation tracking, diligence note management, and real-time domain enrichment.
 
-## 🎯 Features
+---
 
-- **Company Discovery**: Search and filter through a curated database of startups with advanced filtering (industry, stage, funding)
-- **Smart Search**: Global search that indexes company names, descriptions, and industries
-- **Company Profiles**: Detailed profiles with company metrics, stage, funding, and location
-- **Live Enrichment**: Fetch and analyze real public website data on-demand with AI scraping
-- **Smart Lists**: Create and manage target lists, add/remove companies, export to CSV/JSON
-- **Saved Searches**: Save complex search queries with filters for quick re-running
-- **Notes & Annotations**: Add internal notes to companies for team collaboration
-- **Export**: Export lists to CSV for downstream use
+## 🎯 Key Features
+
+- **200+ Curated Global Startups**: In-depth dataset spanning 20+ countries (United States, United Kingdom, France, Germany, India, Israel, Singapore, Canada, Sweden, Australia, Japan, Brazil, Switzerland, Netherlands, South Korea, etc.) across AI/ML, Fintech, Infrastructure, Robotics, SpaceTech, Enterprise SaaS, CleanTech, and Developer Tools.
+- **Interactive Valuation & Growth Trajectory Chart**: Zero-dependency interactive SVG chart plotting historical financing rounds and valuation milestones with hover tooltips, valuation growth multiple tracking, and dual trend/round views.
+- **Star / Saved Startups & Diligence Notes** (`/saved`):
+  - 1-click star/bookmark any startup directly from the dashboard table or company profile.
+  - Smart synchronization: saving diligence notes on a company profile automatically stars and saves the company with those notes.
+  - Searchable portfolio view with quick filters (All / With Notes / Without Notes) and an inline note editor.
+  - 1-click CSV export of your starred portfolio including internal diligence notes.
+- **Country & Multi-Factor Search Engine**: Search by name, mission, sector, or country; filter by Country, Industry, Stage; and sort by Valuation (High/Low), Funding, Founded Year, or Alphabetical.
+- **Executive Dark & Light Mode**: Built-in theme switcher located at the bottom left with standard single-color icons, persistent in `localStorage`.
+- **3-Tier Resilient Logo System**: Local PNG override (`public/logos/{slug}.png`), domain-based Google favicon auto-discovery, and executive monogram avatar fallback.
+- **Live Domain Enrichment**: On-demand domain scraping & signal extraction via `/api/enrich`.
+- **Target Lists Management** (`/lists`): Create named lists, track companies by thesis criteria, and export lists to CSV.
+
+---
 
 ## 🏗️ Tech Stack
 
-- **Frontend**: React 18 + Next.js 14 + TypeScript
-- **Styling**: Tailwind CSS with refined aesthetic
-- **State Management**: Zustand (lightweight, persistent)
-- **UI Components**: Lucide React icons
-- **API**: Next.js API routes for safe, server-side enrichment
-- **Storage**: LocalStorage (with Zustand persistence)
-- **Deployment**: Vercel (recommended) or Netlify
+- **Framework**: Next.js 14 (App Router) + React 18 + TypeScript
+- **Styling**: Tailwind CSS with custom slate palette (`darkMode: 'class'`)
+- **State Management**: Zustand with persistent `localStorage` synchronization
+- **Icons**: Lucide React (standard single-color executive styling)
+- **Charts**: Custom interactive SVG vector charts (zero runtime dependencies, offline-ready)
+
+---
 
 ## 📋 Requirements
 
 - Node.js 18+
 - npm or yarn
 
+---
+
 ## 🚀 Quick Start
 
 ### 1. Clone and Install
 
 ```bash
-git clone https://github.com/yourname/vc-scout.git
-cd vc-scout
+git clone https://github.com/toni8283/VC_intelligence_interface.git
+cd VC_intelligence_interface
 npm install
 ```
 
-### 2. Environment Setup
-
-Create a `.env.local` file in the root directory:
-
-```
-# Optional: Firecrawl API key (for real website scraping)
-# NEXT_PUBLIC_FIRECRAWL_API_KEY=your_api_key_here
-
-# Optional: for future integrations
-# NEXT_PUBLIC_API_URL=http://localhost:3000
-```
-
-**Note**: API keys are never exposed to the browser. All enrichment happens server-side via `/api/enrich`.
-
-### 3. Run Locally
+### 2. Run Locally
 
 ```bash
 npm run dev
@@ -60,47 +56,53 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-### 4. Build for Production
+### 3. Build for Production
 
 ```bash
 npm run build
-npm run start
+npm start
 ```
+
+---
 
 ## 📦 Project Structure
 
 ```
-vc-scout/
+VC_intelligence_interface/
 ├── app/
-│   ├── layout.tsx              # Root layout with sidebar
-│   ├── page.tsx                # Companies discovery page
-│   ├── globals.css             # Global styles
+│   ├── layout.tsx              # Root layout with sidebar & state hydration
+│   ├── page.tsx                # Wide discovery dashboard & KPI stats ribbon
+│   ├── globals.css             # Base styles & dark mode scrollbars
 │   ├── companies/
 │   │   └── [id]/
-│   │       └── page.tsx        # Company detail with enrichment
+│   │       └── page.tsx        # Company detail with valuation chart & notes
 │   ├── lists/
-│   │   └── page.tsx            # Manage lists page
+│   │   └── page.tsx            # Custom investment lists management
 │   ├── saved/
-│   │   └── page.tsx            # Saved searches page
+│   │   └── page.tsx            # Saved startups & diligence notes portfolio
 │   └── api/
 │       └── enrich/
-│           └── route.ts        # Enrichment API endpoint (server-side)
+│           └── route.ts        # Server-side domain enrichment endpoint
 ├── components/
-│   ├── Sidebar.tsx             # Navigation sidebar
-│   ├── SearchHeader.tsx        # Search + filters
-│   ├── CompaniesTable.tsx      # Companies list table
-│   ├── EnrichmentPanel.tsx     # Live enrichment UI
+│   ├── Sidebar.tsx             # TB Scout navigation & bottom theme switcher
+│   ├── SearchHeader.tsx        # Country filter, industry, stage, and sorting
+│   ├── CompaniesTable.tsx      # Table with 1-click star & dark mode hover
+│   ├── CompanyLogo.tsx         # 3-tier resilient logo component
+│   ├── ValuationGrowthChart.tsx# Interactive SVG valuation trajectory chart
+│   ├── EnrichmentPanel.tsx     # Live domain enrichment UI
 │   ├── AddToListModal.tsx      # Save to list dialog
 │   └── CreateListModal.tsx     # Create new list dialog
 ├── lib/
-│   ├── mockData.ts            # Mock company dataset
-│   └── store.ts               # Zustand store (app state)
-├── package.json
-├── tsconfig.json
-├── tailwind.config.js
-├── next.config.js
-└── README.md
+│   ├── mockData.ts             # 204 global startups with full financing rounds
+│   └── store.ts                # Zustand store (persisted state)
+├── public/
+│   └── logos/
+│       └── README.md           # Custom company PNG logo guide
+├── tailwind.config.js          # Tailwind theme & full slate shades
+└── next.config.js              # Next.js configuration
 ```
+
+---
 
 ## 🔌 API Endpoints
 
@@ -111,8 +113,8 @@ Enriches a company with public website data.
 **Request**:
 ```json
 {
-  "website": "https://vercel.com",
-  "companyName": "Vercel"
+  "website": "https://anthropic.com",
+  "companyName": "Anthropic"
 }
 ```
 
@@ -121,132 +123,33 @@ Enriches a company with public website data.
 {
   "summary": "...",
   "whatTheyDo": ["...", "..."],
-  "keywords": ["SaaS", "Developer Tools", ...],
-  "signals": ["Active blog", "Careers page found", ...],
+  "keywords": ["AI/ML", "Foundation Models", "..."],
+  "signals": ["Active careers portal", "Research publications found", "..."],
   "sources": [
     {
-      "url": "https://vercel.com",
+      "url": "https://anthropic.com",
       "timestamp": 1708000000000
     }
   ]
 }
 ```
 
-**Security**: API keys (if used) are stored server-side in environment variables and never exposed to the browser.
+---
 
-## 💾 Data & State Management
+## 💾 State & Persistence
 
-### LocalStorage Persistence
-- **Lists**: All created lists and companies saved within them
-- **Saved Searches**: Search queries with filters
-- Key: `vc-scout-store`
+- **State Store**: Zustand with automatic `localStorage` hydration under key `vc-scout-store`.
+- **Persisted Entities**:
+  - `savedCompanies`: Starred startups with internal diligence notes and timestamps.
+  - `lists`: Custom named company lists.
+  - `darkMode`: Selected theme preference (`light` or `dark`).
 
-Zustand automatically syncs state to localStorage, so data persists across browser sessions.
-
-### Mock Data
-The app seeds with 8 mock companies (Vercel, Anthropic, Stripe, Figure AI, Canva, Scale AI, Notion, OpenAI). Replace `lib/mockData.ts` with real API calls to your company database.
-
-## 🎨 Design & UX
-
-### Aesthetic
-- **Refined minimalism**: Clean typography, generous whitespace, careful color palette
-- **Color scheme**: Slate grays, accent blue (#0066ff), white backgrounds
-- **Typography**: Inter font family for consistency and legibility
-- **Interactions**: Smooth transitions, hover states, loading indicators
-  <img width="3054" height="1432" alt="image" src="https://github.com/user-attachments/assets/59afa4dc-415e-4f74-a31c-807e820f302e" />
-
-
-### Key Pages
-
-**1. Companies Discovery** (`/`)
-- Global search with real-time filtering
-- Sortable table with pagination
-- Industry + Stage filters
-- Save complex searches for later
-  <img width="2511" height="856" alt="image" src="https://github.com/user-attachments/assets/76951de4-00bc-4c40-ba0f-0054364642c2" />
-  <img width="2933" height="856" alt="image" src="https://github.com/user-attachments/assets/ddbb7569-ab5e-49f6-b71b-881da645fd13" />
-
-
-
-**2. Company Profile** (`/companies/[id]`)
-- Detailed company metrics (stage, funding, location)
-- **Live enrichment panel**: Click "Enrich Now" to fetch and analyze website
-- Internal notes for team collaboration
-- Save to lists for tracking
-  <img width="2933" height="953" alt="image" src="https://github.com/user-attachments/assets/b1d4460f-457a-41d2-b0fa-9953bd49e1d9" />
-  <img width="1742" height="1425" alt="image" src="https://github.com/user-attachments/assets/dc6801d7-0a6a-477e-bc91-426e6cb6ae41" />
-
-
-
-**3. Lists Management** (`/lists`)
-- Create named lists with descriptions
-- Add/remove companies from lists
-- Export lists to CSV
-- Track companies by investment criteria
-  <img width="2114" height="1382" alt="image" src="https://github.com/user-attachments/assets/284ddc38-1653-4795-9575-a87798e4de2c" />
-
-
-**4. Saved Startups & Diligence Notes** (`/saved`)
-- 1-click star/bookmark any startup directly from the dashboard table or company profile
-- Star without notes or add diligence notes to automatically star and save the company
-- View, filter (all / with notes / without notes), and edit company diligence notes directly on `/saved`
-- One-click CSV export of your saved startups portfolio with notes included
-- Quick access badge with live counter in the sidebar and search header
-
-## 🔒 Security Best Practices
-
-1. **API Keys Server-Side**: All enrichment API calls use server-side routes (`/api/enrich`). Keys in environment variables are never exposed to the browser.
-2. **No Authentication**: This MVP assumes single-user (local) use. For multi-user, add auth (Firebase, Clerk, etc.).
-3. **Rate Limiting**: Consider adding rate limits to `/api/enrich` in production.
-4. **HTTPS**: Deploy with HTTPS enabled (Vercel does this by default).
-
-## 🚀 Deployment
-
-### Vercel (Recommended)
-
-```bash
-npm install -g vercel
-vercel login
-vercel
-```
-
-1. Connect your GitHub repository
-2. Set environment variables in Vercel dashboard
-3. Deploy on push to main branch
-
-### Netlify
-
-```bash
-npm install -g netlify-cli
-netlify deploy
-```
-
-## 📊 Future Enhancements
-
-### MVP Stretch Goals (in order of priority)
-1. **Real Enrichment**: Integrate Firecrawl API for actual website scraping + Claude API for LLM extraction
-2. **Queue + Rate Limiting**: Async job queue (Bull, Agenda) for heavy enrichment workloads
-3. **Vector Search**: Embed company descriptions, use similarity search for "find similar companies"
-4. **Database**: Move from localStorage → PostgreSQL (Supabase) for multi-user + persistence
-5. **Authentication**: Add user accounts (Clerk, Firebase) for team collaboration
-6. **CRM Integrations**: Sync lists to Salesforce, HubSpot, Affinity
-7. **Slack Notifications**: Alert team when new companies match thesis
-8. **Thesis Editor**: Visual UI to define and refine your investment thesis
-9. **Scoring Engine**: Automatically score companies against your thesis
-10. **Analytics**: Track which companies you've enriched, saved, and outcomes
-
-## 🤝 Contributing
-
-Pull requests welcome! Please follow the existing code style and add tests for new features.
+---
 
 ## 📄 License
 
 MIT
 
-## 📞 Support
-
-For issues or questions, open a GitHub issue or contact the maintainer.
-
 ---
 
-**Built with care for VCs who value precision in sourcing.** ⚡
+**TB Scout • Precision Venture Intelligence**

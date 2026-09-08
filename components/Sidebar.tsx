@@ -123,9 +123,8 @@ export default function Sidebar() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between text-[11px] text-slate-400 dark:text-slate-500 px-1">
+        <div className="text-[11px] text-slate-400 dark:text-slate-500 px-1">
           <span>TB scout</span>
-          <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400">v1.0</span>
         </div>
       </div>
     </aside>
