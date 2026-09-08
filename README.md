@@ -1,4 +1,4 @@
-# VC Scout - Precision AI Scout for VCs
+# TB Scout - Precision Venture Intelligence Platform
 
 A polished, production-grade VC intelligence interface with live enrichment capabilities. Discover companies, create lists, save searches, and enrich profiles with real website data—all in a fast, intuitive interface.
 
@@ -186,10 +186,12 @@ The app seeds with 8 mock companies (Vercel, Anthropic, Stripe, Figure AI, Canva
   <img width="2114" height="1382" alt="image" src="https://github.com/user-attachments/assets/284ddc38-1653-4795-9575-a87798e4de2c" />
 
 
-**4. Saved Searches** (`/saved`)
-- View all saved search queries
-- Load searches to re-run filtering
-- Delete outdated searches
+**4. Saved Startups & Diligence Notes** (`/saved`)
+- 1-click star/bookmark any startup directly from the dashboard table or company profile
+- Star without notes or add diligence notes to automatically star and save the company
+- View, filter (all / with notes / without notes), and edit company diligence notes directly on `/saved`
+- One-click CSV export of your saved startups portfolio with notes included
+- Quick access badge with live counter in the sidebar and search header
 
 ## 🔒 Security Best Practices
 

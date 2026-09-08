@@ -1,17 +1,49 @@
 import { create } from 'zustand';
 
+export interface FundingRound {
+  round: string;
+  amount: string;
+  valuation: string;
+  date: string;
+  investors?: string[];
+}
+
+export interface ValuationPoint {
+  year: string;
+  valuation: number; // in millions USD
+  valuationDisplay: string;
+  event: string;
+}
+
 export interface Company {
   id: string;
   name: string;
+  slug?: string;
+  domain?: string;
   website: string;
   description: string;
   industry: string;
   stage: string;
   fundingRaised: string;
+  fundingNum?: number; // in millions USD
+  currentValuation?: string;
+  valuationNum?: number; // in millions USD
+  country: string;
   headquarters: string;
   foundedYear: number;
   employeeCount: string;
-  logo: string;
+  logo?: string;
+  tags?: string[];
+  fundingRounds?: FundingRound[];
+  valuationHistory?: ValuationPoint[];
+}
+
+export type SortOption = 'valuation-desc' | 'valuation-asc' | 'funding-desc' | 'name-asc' | 'year-desc';
+
+export interface SavedCompany {
+  companyId: string;
+  notes?: string;
+  savedAt: number;
 }
 
 export interface SavedSearch {
@@ -21,6 +53,8 @@ export interface SavedSearch {
   filters: {
     industry?: string;
     stage?: string;
+    country?: string;
+    sortBy?: SortOption;
     minFunding?: string;
   };
   createdAt: number;
@@ -45,16 +79,30 @@ export interface EnrichedData {
 }
 
 interface AppStore {
+  // Theme
+  darkMode: boolean;
+  setDarkMode: (isDark: boolean) => void;
+  toggleDarkMode: () => void;
+
   // Companies
   companies: Company[];
   searchQuery: string;
   filters: {
     industry?: string;
     stage?: string;
+    country?: string;
+    sortBy?: SortOption;
   };
   setSearchQuery: (query: string) => void;
   setFilters: (filters: AppStore['filters']) => void;
   resetFilters: () => void;
+
+  // Saved Companies with Notes (Starred)
+  savedCompanies: Record<string, SavedCompany>;
+  toggleSaveCompany: (companyId: string, notes?: string) => void;
+  saveCompanyNotes: (companyId: string, notes: string) => void;
+  removeSavedCompany: (companyId: string) => void;
+  isCompanySaved: (companyId: string) => boolean;
 
   // Lists
   lists: CompanyList[];
@@ -63,7 +111,7 @@ interface AppStore {
   removeFromList: (listId: string, companyId: string) => void;
   deleteList: (listId: string) => void;
 
-  // Saved Searches
+  // Saved Searches (legacy/optional)
   savedSearches: SavedSearch[];
   saveCurrent: (name: string) => void;
   loadSearch: (searchId: string) => void;
@@ -78,6 +126,7 @@ interface AppStore {
 }
 
 const useStore = create<AppStore>((set, get) => ({
+  darkMode: false,
   companies: [],
   searchQuery: '',
   filters: {},
@@ -85,9 +134,73 @@ const useStore = create<AppStore>((set, get) => ({
   lists: [],
   savedSearches: [],
 
+  setDarkMode: (isDark) => {
+    set({ darkMode: isDark });
+    if (typeof document !== 'undefined') {
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+  },
+
+  toggleDarkMode: () => {
+    const next = !get().darkMode;
+    get().setDarkMode(next);
+  },
+
   setSearchQuery: (query) => set({ searchQuery: query }),
   setFilters: (filters) => set({ filters }),
   resetFilters: () => set({ filters: {} }),
+
+  savedCompanies: {},
+
+  toggleSaveCompany: (companyId, notes) => {
+    set((state) => {
+      const existing = state.savedCompanies[companyId];
+      if (existing) {
+        const copy = { ...state.savedCompanies };
+        delete copy[companyId];
+        return { savedCompanies: copy };
+      }
+      return {
+        savedCompanies: {
+          ...state.savedCompanies,
+          [companyId]: {
+            companyId,
+            notes: notes || '',
+            savedAt: Date.now(),
+          },
+        },
+      };
+    });
+  },
+
+  saveCompanyNotes: (companyId, notes) => {
+    set((state) => ({
+      savedCompanies: {
+        ...state.savedCompanies,
+        [companyId]: {
+          companyId,
+          notes,
+          savedAt: state.savedCompanies[companyId]?.savedAt || Date.now(),
+        },
+      },
+    }));
+  },
+
+  removeSavedCompany: (companyId) => {
+    set((state) => {
+      const copy = { ...state.savedCompanies };
+      delete copy[companyId];
+      return { savedCompanies: copy };
+    });
+  },
+
+  isCompanySaved: (companyId) => {
+    return Boolean(get().savedCompanies[companyId]);
+  },
 
   createList: (name, description) => {
     const newList: CompanyList = {
@@ -172,11 +285,29 @@ const useStore = create<AppStore>((set, get) => ({
     if (typeof window === 'undefined') return;
     const stored = localStorage.getItem('vc-scout-store');
     if (stored) {
-      const data = JSON.parse(stored);
-      set({
-        lists: data.lists || [],
-        savedSearches: data.savedSearches || [],
-      });
+      try {
+        const data = JSON.parse(stored);
+        const isDark = Boolean(data.darkMode);
+        set({
+          lists: data.lists || [],
+          savedSearches: data.savedSearches || [],
+          savedCompanies: data.savedCompanies || {},
+          darkMode: isDark,
+        });
+        if (isDark) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch (e) {
+        console.error('Failed to parse stored data', e);
+      }
+    } else {
+      // Check system preference if no stored value
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        set({ darkMode: true });
+        document.documentElement.classList.add('dark');
+      }
     }
   },
 }));
@@ -189,6 +320,8 @@ if (typeof window !== 'undefined') {
       JSON.stringify({
         lists: state.lists,
         savedSearches: state.savedSearches,
+        savedCompanies: state.savedCompanies,
+        darkMode: state.darkMode,
       })
     );
   });
